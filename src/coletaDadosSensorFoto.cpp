@@ -22,7 +22,7 @@ void coletaDadosSensorFotoeletrico_task(void* pvParameters) {
 
             dArrDadosSensorFotoBruto[i][0] = (double)analogRead(pinos[i]);
 
-            for (int j = 0; j < 7; j++) {
+            for (int j = 0; j < 8; j++) {
                 somaTemporaria += dArrDadosSensorFotoBruto[i][j];
             }
 

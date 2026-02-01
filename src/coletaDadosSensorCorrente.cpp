@@ -17,10 +17,12 @@ void leituraSensorCorrente_task(void* pvParameters) {
 
         for (int i = 0; i < 5; i++) {
             dArrSensorCorrente[i] = (dArrSensorCorrente[i] * 0.8) + (analogRead(pinosSensorCorrente[i]) * 0.2);
-            if (dArrSensorCorrente[i] < 2047 + iCorrenteMaxima && dArrSensorCorrente[i] > 2047 - iCorrenteMaxima) {
-                bArrMotorLiberado[i] = true;
-            } else {
+            if (dArrSensorCorrente[i] > (2047 + iCorrenteMaxima) || dArrSensorCorrente[i] < (2047 - iCorrenteMaxima)) {
                 bArrMotorLiberado[i] = false;
+            } else {
+                if (abs(dArrSensorCorrente[i] - 2047) < (iCorrenteMaxima * 0.8)) {
+                    bArrMotorLiberado[i] = true;
+                }
             }
         }
     }

@@ -233,8 +233,11 @@ void startWebServer() {
     });
 
     // Rota JSON Data
+
     server.on("/data", HTTP_GET, [](AsyncWebServerRequest* request) {
-        String json = "{";
+        String json;
+        json.reserve(512);
+        json = "{";
 
         // Dedos (Treino) - Nao solicitado no grafico, mas mantido no JSON caso precise
         json += "\"dedos\":[";
