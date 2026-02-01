@@ -128,7 +128,6 @@ void modoTreinoAtivado_task(void* pvParameters) {
                         if (uiTreinoVal == 0) {
                             estadoMotorAtual = ST_OPERACAO;
                             bModoTreino = false;
-                            bCalibDone = true;
                             printf("[TREINO-MOTOR] Sequencia Finalizada. Calculando estatisticas...\n");
                         } else {
                             estadoMotorAtual = ST_DOIS;
@@ -234,6 +233,7 @@ void atualizaMaquinaEstadosCalibracao() {
             }
 
             estadoCalibAtual = CALIB_IDLE;
+            bCalibDone = true;
             break;
     }
 }
