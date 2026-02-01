@@ -17,24 +17,7 @@ void atuaMotor_task(void* pvParameters) {
     for (;;) {
         vTaskDelayUntil(&xLastWakeTime, xFrequency);
         if (xSemaphoreTake(xAtuaMotorMutex, (TickType_t)5) == true) {
-            if (bModoTreino) {
-                for (uint8_t i = 0; i < 5; i++) {
-                    ledcDetachPin(MOTOR_IN_1_PIN[i]);
-                    pinMode(MOTOR_IN_1_PIN[i], OUTPUT);
-                    digitalWrite(MOTOR_IN_1_PIN[i], LOW);
-
-                    if (uiVetorDedosTreino[i] == 1) {
-                        analogWrite(MOTOR_IN_2_PIN[i], 255);
-                    } else {
-                        ledcDetachPin(MOTOR_IN_2_PIN[i]);
-                        pinMode(MOTOR_IN_2_PIN[i], OUTPUT);
-                        digitalWrite(MOTOR_IN_2_PIN[i], LOW);
-                    }
-                }
-                ledcDetachPin(MOTOR_IN_1_PIN[5]);
-                pinMode(MOTOR_IN_1_PIN[5], OUTPUT);
-                digitalWrite(MOTOR_IN_1_PIN[5], LOW);
-            } else {  // ! bModoTreino
+            if (!bModoTreino) {
                 for (uint8_t localN = 0; localN < 5; localN++) {
                     uint8_t pinoAtivo;
                     uint8_t pinoInativo;
@@ -47,6 +30,8 @@ void atuaMotor_task(void* pvParameters) {
                         pinoInativo = MOTOR_IN_1_PIN[localN];
                     }
 
+                    digitalWrite(pinoInativo, LOW);
+
                     if (bArrMotorLiberado[localN]) {
                         if (uiArrPwmRampa[localN] >= uiArrPwmLevels[localN]) {
                             uiArrPwmRampa[localN] = uiArrPwmLevels[localN];
@@ -55,25 +40,14 @@ void atuaMotor_task(void* pvParameters) {
                                 uiArrPwmRampa[localN] + STEP_PWM_RAMPA;
                         }
 
-                        ledcDetachPin(pinoInativo);
-                        pinMode(pinoInativo, OUTPUT);
-                        digitalWrite(pinoInativo, LOW);
-
                         if (uiArrPwmRampa[localN] == 0) {
-                            ledcDetachPin(pinoAtivo);
-                            pinMode(pinoAtivo, OUTPUT);
                             digitalWrite(pinoAtivo, LOW);
                         } else {
                             analogWrite(pinoAtivo, uiArrPwmRampa[localN]);
                         }
                     } else {
-                        ledcDetachPin(MOTOR_IN_1_PIN[localN]);
-                        pinMode(MOTOR_IN_1_PIN[localN], OUTPUT);
-                        digitalWrite(MOTOR_IN_1_PIN[localN], LOW);
-
-                        ledcDetachPin(MOTOR_IN_2_PIN[localN]);
-                        pinMode(MOTOR_IN_2_PIN[localN], OUTPUT);
-                        digitalWrite(MOTOR_IN_2_PIN[localN], LOW);
+                        digitalWrite(pinoAtivo, LOW);    // Libera canal
+                        digitalWrite(pinoInativo, LOW);  // Libera canal
                         uiArrPwmRampa[localN] = 0;
                     }
                 }
