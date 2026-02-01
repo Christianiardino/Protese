@@ -67,6 +67,14 @@ void setup() {
         return;
     }
 
+    xEstatisticaMutex = xSemaphoreCreateMutex();
+    if (xEstatisticaMutex == NULL) {
+        if (DEBUG_PRINT) {
+            printf("[ERR] Falha ao criar Mutex Estatistica.\n");
+        }
+        return;
+    }
+
     // 2. Setup task neopixel
     xTaskCreatePinnedToCore(
         updateNeoPixel_task,         // Função da Task

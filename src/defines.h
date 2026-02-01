@@ -120,6 +120,7 @@ extern int iCorrenteMaxima;
 extern SemaphoreHandle_t xNeoPixelMutex;
 extern SemaphoreHandle_t xAtuaMotorMutex;
 extern SemaphoreHandle_t xSensorFotoMutex;
+extern SemaphoreHandle_t xEstatisticaMutex;  // <--- ADICIONE ESTA LINHA
 
 extern double dTreinoCount;
 extern double dArrDadosSensorFotoBruto[4][8];

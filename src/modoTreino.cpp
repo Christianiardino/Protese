@@ -210,17 +210,24 @@ void atualizaMaquinaEstadosCalibracao() {
             setInternalLedColor(0, 0, 0);
 
             if (dTreinoCount > 0) {
+                double tempMu[4];
+                double tempSigma[4];
+
                 for (int i = 0; i < 4; i++) {
                     double mu_novo = dTreinoSum[i] / dTreinoCount;
-                    dMu[i] = mu_novo;
-
+                    tempMu[i] = mu_novo;
                     double var_novo = (dTreinoSumSq[i] / dTreinoCount) - (mu_novo * mu_novo);
-
                     if (var_novo < 0) var_novo = 0;
+                    tempSigma[i] = sqrt(var_novo);
+                    printf("  Sensor[%d]: Mu=%.2f, Sigma=%.2f\n", i, tempMu[i], tempSigma[i]);
+                }
 
-                    dSigma[i] = sqrt(var_novo);
-
-                    printf("  Sensor[%d]: Mu=%.2f, Sigma=%.2f\n", i, dMu[i], dSigma[i]);
+                if (xSemaphoreTake(xEstatisticaMutex, portMAX_DELAY) == pdTRUE) {
+                    for (int i = 0; i < 4; i++) {
+                        dMu[i] = tempMu[i];
+                        dSigma[i] = tempSigma[i];
+                    }
+                    xSemaphoreGive(xEstatisticaMutex);
                 }
             } else {
                 printf("[CALIB] Erro: Divisao por zero (Count = 0)\n");
