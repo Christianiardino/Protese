@@ -3,7 +3,6 @@
 #include <ESPAsyncWebServer.h>
 #include <WiFi.h>
 #include <defines.h>
-#include <funcaoNeoPixel.h>
 
 const char* ssid = "PROTESE_WEB_SERVER";
 const char* password = "12345678";
@@ -217,9 +216,6 @@ const char index_html[] PROGMEM = R"rawliteral(
 </html>)rawliteral";
 
 void startWebServer() {
-    // Inicializa LED Interno (Pin 48) desligado (apenas hardware, sem controle web)
-    neopixelWrite(INTERNAL_RGB, 0, 0, 0);
-
     WiFi.softAPConfig(local_ip, gateway, subnet);
     bool success = WiFi.softAP(ssid, password, 1, 0, 4);
 

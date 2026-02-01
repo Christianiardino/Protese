@@ -91,7 +91,7 @@
 #define CORE_COLETA_FOTO 1
 #define CORE_MODO_TREINO 1
 #define CORE_COLETA_CORRENTE 1
-#define CORE_REDE_NEURAL 2
+#define CORE_REDE_NEURAL 1
 
 //______________________________________________ Variáveis ______________________________________________
 
