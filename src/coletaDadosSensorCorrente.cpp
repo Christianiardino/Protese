@@ -13,6 +13,8 @@ void leituraSensorCorrente_task(void* pvParameters) {
 
     const uint8_t pinosSensorCorrente[5] = {SC1, SC2, SC3, SC4, SC5};
     for (;;) {
+        vTaskDelayUntil(&xLastWakeTime, xFrequency);
+
         for (int i = 0; i < 5; i++) {
             dArrSensorCorrente[i] = (dArrSensorCorrente[i] * 0.8) + (analogRead(pinosSensorCorrente[i]) * 0.2);
             if (dArrSensorCorrente[i] < 2047 + iCorrenteMaxima && dArrSensorCorrente[i] > 2047 - iCorrenteMaxima) {

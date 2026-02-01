@@ -17,12 +17,17 @@ void redeNeural_task(void* pvParameters) {
     for (;;) {
         vTaskDelayUntil(&xLastWakeTime, xFrequency);
 
-        // Se não tiver calibração, pode pular ou rodar com zeros (opcional)
-        // if(!bCalibDone) continue;
+        if (!bCalibDone) continue;
+
+        double leituraAtual[4];  // Copia local
+        if (xSemaphoreTake(xSensorFotoMutex, (TickType_t)5) == pdTRUE) {
+            memcpy(leituraAtual, dArrDadosSensorFoto, sizeof(dArrDadosSensorFoto));
+            xSemaphoreGive(xSensorFotoMutex);
+        }
 
         // 1. Normalização (Z-Score)
         for (int i = 0; i < 4; i++) {
-            x_norm[i] = (dArrDadosSensorFoto[i] - dMu[i]) / (dSigma[i] + epsilon);
+            x_norm[i] = (leituraAtual[i] - dMu[i]) / (dSigma[i] + epsilon);
         }
 
         // 2. Camada 1 (Dense 4->20 + Tanh)
@@ -75,63 +80,68 @@ void redeNeural_task(void* pvParameters) {
                 bestClass = c;
             }
         }
-        switch (bestClass) {
-            case 0:
-                bArrDedoContraido[0] = false;
-                bArrDedoContraido[1] = false;
-                bArrDedoContraido[2] = false;
-                bArrDedoContraido[3] = false;
-                bArrDedoContraido[4] = false;
-                break;
-            case 1:
-                bArrDedoContraido[0] = true;
-                bArrDedoContraido[1] = false;
-                bArrDedoContraido[2] = false;
-                bArrDedoContraido[3] = false;
-                bArrDedoContraido[4] = false;
-                break;
-            case 2:
-                bArrDedoContraido[0] = false;
-                bArrDedoContraido[1] = true;
-                bArrDedoContraido[2] = false;
-                bArrDedoContraido[3] = false;
-                bArrDedoContraido[4] = false;
-                break;
-            case 3:
-                bArrDedoContraido[0] = true;
-                bArrDedoContraido[1] = true;
-                bArrDedoContraido[2] = false;
-                bArrDedoContraido[3] = false;
-                bArrDedoContraido[4] = false;
-                break;
-            case 4:
-                bArrDedoContraido[0] = true;
-                bArrDedoContraido[1] = true;
-                bArrDedoContraido[2] = true;
-                bArrDedoContraido[3] = true;
-                bArrDedoContraido[4] = true;
-                break;
-            case 5:
-                bArrDedoContraido[0] = false;
-                bArrDedoContraido[1] = true;
-                bArrDedoContraido[2] = true;
-                bArrDedoContraido[3] = false;
-                bArrDedoContraido[4] = false;
-                break;
-            case 6:
-                bArrDedoContraido[0] = false;
-                bArrDedoContraido[1] = true;
-                bArrDedoContraido[2] = true;
-                bArrDedoContraido[3] = true;
-                bArrDedoContraido[4] = false;
-                break;
-            case 7:
-                bArrDedoContraido[0] = false;
-                bArrDedoContraido[1] = true;
-                bArrDedoContraido[2] = true;
-                bArrDedoContraido[3] = true;
-                bArrDedoContraido[4] = true;
-                break;
+
+        if (xSemaphoreTake(xAtuaMotorMutex, (TickType_t)5) == pdTRUE) {
+            switch (bestClass) {
+                case 0:
+                    bArrDedoContraido[0] = false;
+                    bArrDedoContraido[1] = false;
+                    bArrDedoContraido[2] = false;
+                    bArrDedoContraido[3] = false;
+                    bArrDedoContraido[4] = false;
+                    break;
+                case 1:
+                    bArrDedoContraido[0] = true;
+                    bArrDedoContraido[1] = false;
+                    bArrDedoContraido[2] = false;
+                    bArrDedoContraido[3] = false;
+                    bArrDedoContraido[4] = false;
+                    break;
+                case 2:
+                    bArrDedoContraido[0] = false;
+                    bArrDedoContraido[1] = true;
+                    bArrDedoContraido[2] = false;
+                    bArrDedoContraido[3] = false;
+                    bArrDedoContraido[4] = false;
+                    break;
+                case 3:
+                    bArrDedoContraido[0] = true;
+                    bArrDedoContraido[1] = true;
+                    bArrDedoContraido[2] = false;
+                    bArrDedoContraido[3] = false;
+                    bArrDedoContraido[4] = false;
+                    break;
+                case 4:
+                    bArrDedoContraido[0] = true;
+                    bArrDedoContraido[1] = true;
+                    bArrDedoContraido[2] = true;
+                    bArrDedoContraido[3] = true;
+                    bArrDedoContraido[4] = true;
+                    break;
+                case 5:
+                    bArrDedoContraido[0] = false;
+                    bArrDedoContraido[1] = true;
+                    bArrDedoContraido[2] = true;
+                    bArrDedoContraido[3] = false;
+                    bArrDedoContraido[4] = false;
+                    break;
+                case 6:
+                    bArrDedoContraido[0] = false;
+                    bArrDedoContraido[1] = true;
+                    bArrDedoContraido[2] = true;
+                    bArrDedoContraido[3] = true;
+                    bArrDedoContraido[4] = false;
+                    break;
+                case 7:
+                    bArrDedoContraido[0] = false;
+                    bArrDedoContraido[1] = true;
+                    bArrDedoContraido[2] = true;
+                    bArrDedoContraido[3] = true;
+                    bArrDedoContraido[4] = true;
+                    break;
+            }
+
+            xSemaphoreGive(xAtuaMotorMutex);
         }
     }
 }

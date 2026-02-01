@@ -26,7 +26,10 @@ void coletaDadosSensorFotoeletrico_task(void* pvParameters) {
                 somaTemporaria += dArrDadosSensorFotoBruto[i][j];
             }
 
-            dArrDadosSensorFoto[i] = somaTemporaria * 0.125;
+            if (xSemaphoreTake(xSensorFotoMutex, (TickType_t)5) == pdTRUE) {
+                dArrDadosSensorFoto[i] = somaTemporaria * 0.125;
+                xSemaphoreGive(xSensorFotoMutex);
+            }
         }
 
         if (DEBUG_STACK_SIZE) {
