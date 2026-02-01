@@ -10,6 +10,9 @@
 
 bool bArrMotorLiberado[] = {true, true, true, true, true};
 bool bArrDedoContraido[] = {false, false, false, false, false};
+bool bArrSobrecorrenteDetectada[5] = {false, false, false, false, false};
+bool bArrMotorEstadoTravado[5] = {false, false, false, false, false};
+bool bArrUltimaDirecao[5] = {false, false, false, false, false};
 bool bModoTreino = true;
 bool bCalibDone = false;
 
@@ -21,6 +24,9 @@ uint8_t uiConterFreqModulacaoNeoPixel = 0;
 uint8_t uiContadorTreino = 0;
 uint8_t uiTreinoE = 0;
 uint8_t uiTreinoVal = 0;
+uint8_t uiCliclosCorrenteAlta = 5;
+uint8_t uiArrPwmCorrenteAtingida = 0;  // 0 = Solta o objeto ao travar. Mude para 30-50 se quiser segurar.
+uint8_t uiArrContadorCiclosAlta[5] = {0, 0, 0, 0, 0};
 uint8_t uiVetorDedosTreino[5] = {0, 0, 0, 0, 0};
 uint8_t uiArrCorNeoPixel[] = {196, 196, 196};
 uint8_t uiArrPwmLevels[] = {0, 0, 0, 0, 0, 0};

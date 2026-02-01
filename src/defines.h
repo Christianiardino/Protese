@@ -97,6 +97,9 @@
 
 extern bool bArrMotorLiberado[];
 extern bool bArrDedoContraido[];
+extern bool bArrSobrecorrenteDetectada[5];
+extern bool bArrMotorEstadoTravado[5];
+extern bool bArrUltimaDirecao[5];
 extern bool bModoTreino;
 extern bool bCalibDone;
 
@@ -108,6 +111,9 @@ extern uint8_t uiConterFreqModulacaoNeoPixel;
 extern uint8_t uiContadorTreino;
 extern uint8_t uiTreinoE;
 extern uint8_t uiTreinoVal;
+extern uint8_t uiCliclosCorrenteAlta;
+extern uint8_t uiArrPwmCorrenteAtingida;
+extern uint8_t uiArrContadorCiclosAlta[5];
 extern uint8_t uiVetorDedosTreino[];
 extern uint8_t uiArrCorNeoPixel[];
 extern uint8_t uiArrPwmLevels[];
