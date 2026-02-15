@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <Servo.h>
 #include <coletaDadosSensorCorrente.h>
 #include <coletaDadosSensorFoto.h>
 #include <controleMotor.h>
@@ -29,18 +30,24 @@ void setup() {
     pinMode(SL3, INPUT);
     pinMode(SL4, INPUT);
 
-    for (int i = 0; i < 6; i++) {
-        pinMode(MOTOR_IN_1_PIN[i], OUTPUT);
-        digitalWrite(MOTOR_IN_1_PIN[i], LOW);
-        if (i < 5) {
-            pinMode(MOTOR_IN_2_PIN[i], OUTPUT);
-            digitalWrite(MOTOR_IN_2_PIN[i], LOW);
-        }
-    }
-
     setupNeoPixels();
     startWebServer();
     setInternalLedColor(0, 0, 0);
+
+    servoPolegar.attach(MOTOR_PIN[0]);
+    servoPolegar.write(iPosServo[0]);
+
+    servoPolegar.attach(MOTOR_PIN[1]);
+    servoPolegar.write(iPosServo[1]);
+
+    servoPolegar.attach(MOTOR_PIN[2]);
+    servoPolegar.write(iPosServo[2]);
+
+    servoPolegar.attach(MOTOR_PIN[3]);
+    servoPolegar.write(iPosServo[3]);
+
+    servoPolegar.attach(MOTOR_PIN[4]);
+    servoPolegar.write(iPosServo[4]);
 
     // Criação dos semafaros
     xNeoPixelMutex = xSemaphoreCreateMutex();

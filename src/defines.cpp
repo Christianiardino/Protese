@@ -12,13 +12,11 @@ bool bArrMotorLiberado[] = {true, true, true, true, true};
 bool bArrDedoContraido[] = {false, false, false, false, false};
 bool bArrSobrecorrenteDetectada[5] = {false, false, false, false, false};
 bool bArrMotorEstadoTravado[5] = {false, false, false, false, false};
-bool bArrUltimaDirecao[5] = {false, false, false, false, false};
 bool bModoTreino = true;
 bool bCalibDone = false;
 
 const uint8_t uiFreqModulacaoNeoPixelAtivado = 3;  // 3 clicos desativados para 1 ativado (valor de 1 é constante)
-const uint8_t MOTOR_IN_1_PIN[] = {IN1M1, IN1M2, IN1M3, IN1M4, IN1M5, IN1M6};
-const uint8_t MOTOR_IN_2_PIN[] = {IN2M1, IN2M2, IN2M3, IN2M4, IN2M5};
+const uint8_t MOTOR_PIN[] = {MOTOR1, MOTOR2, MOTOR3, MOTOR4, MOTOR5, MOTOR_VIB};
 
 uint8_t uiConterFreqModulacaoNeoPixel = 0;
 uint8_t uiContadorTreino = 0;
@@ -35,6 +33,13 @@ uint8_t uiCorNeoPixelInterno[] = {0, 0, 0};
 
 int iContadorChamdaSensorFoto = 0;
 int iCorrenteMaxima = 250;
+int iPosServo[] = {0, 0, 0, 0, 0};
+
+Servo servoPolegar;
+Servo servoIndicador;
+Servo servoMedio;
+Servo servoAnelar;
+Servo servoMindinho;
 
 SemaphoreHandle_t xNeoPixelMutex = NULL;   // Trava as variaveis: colorTable, uiArrCorNeoPixel
 SemaphoreHandle_t xAtuaMotorMutex = NULL;  // Trava as variaveis: bArrMotorLiberado, bArrDedoContraido, uiArrPwmLevels, uiArrPwmRampa

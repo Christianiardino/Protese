@@ -2,6 +2,7 @@
 #define DEFINES_H
 
 #include <Arduino.h>
+#include <Servo.h>
 
 #include "driver/rmt.h"
 #include "freertos/FreeRTOS.h"
@@ -17,24 +18,19 @@
 
 //______________________________________________ Atua Motores______________________________________________
 // Definições de pinos dos motores
-#define IN1M1 11
-#define IN2M1 12
-#define IN1M2 16
-#define IN2M2 15
-#define IN1M3 41
-#define IN2M3 40
-#define IN1M4 02
-#define IN2M4 42
-#define IN1M5 38
-#define IN2M5 39
-#define IN1M6 20
+#define MOTOR1 35
+#define MOTOR2 36
+#define MOTOR3 37
+#define MOTOR4 38
+#define MOTOR5 39
+#define MOTOR_VIB 40
 
 // Defines Atua motor
 #define STEP_PWM_RAMPA 1
 
 //______________________________________________ Update Neopixel______________________________________________
 // Definições de Hardware e Protocolo NEOPIXEL
-#define NEOPIXEL_PIN 19
+#define NEOPIXEL_PIN 45
 #define N_PIXELS 7
 #define RMT_TX_CHANNEL RMT_CHANNEL_0
 
@@ -51,14 +47,14 @@
 #define SC2 5
 #define SC3 6
 #define SC4 7
-#define SC5 8
+#define SC5 1
 
 //______________________________________________ Leitura sensor luz ______________________________________________
 // Definições de Hardware pinos sensor de luz
-#define SL1 3
-#define SL2 9
-#define SL3 10
-#define SL4 1
+#define SL1 8
+#define SL2 3
+#define SL3 9
+#define SL4 10
 
 //______________________________________________ RTOS______________________________________________
 // Frequência de atualização task
@@ -99,12 +95,10 @@ extern bool bArrMotorLiberado[];
 extern bool bArrDedoContraido[];
 extern bool bArrSobrecorrenteDetectada[5];
 extern bool bArrMotorEstadoTravado[5];
-extern bool bArrUltimaDirecao[5];
 extern bool bModoTreino;
 extern bool bCalibDone;
 
-extern const uint8_t MOTOR_IN_1_PIN[];
-extern const uint8_t MOTOR_IN_2_PIN[];
+extern const uint8_t MOTOR_PIN[];
 extern const uint8_t uiFreqModulacaoNeoPixelAtivado;
 
 extern uint8_t uiConterFreqModulacaoNeoPixel;
@@ -122,11 +116,18 @@ extern uint8_t uiCorNeoPixelInterno[];
 
 extern int iContadorChamdaSensorFoto;
 extern int iCorrenteMaxima;
+extern int iPosServo[];
+
+extern Servo servoPolegar;
+extern Servo servoIndicador;
+extern Servo servoMedio;
+extern Servo servoAnelar;
+extern Servo servoMindinho;
 
 extern SemaphoreHandle_t xNeoPixelMutex;
 extern SemaphoreHandle_t xAtuaMotorMutex;
 extern SemaphoreHandle_t xSensorFotoMutex;
-extern SemaphoreHandle_t xEstatisticaMutex;  // <--- ADICIONE ESTA LINHA
+extern SemaphoreHandle_t xEstatisticaMutex;
 
 extern double dTreinoCount;
 extern double dArrDadosSensorFotoBruto[4][8];
