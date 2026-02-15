@@ -59,19 +59,19 @@
 //______________________________________________ RTOS______________________________________________
 // Frequência de atualização task
 #define TAKS_FREQ_UPDATE_NEOPIXEL 10   // ms
-#define TAKS_FREQ_ATUA_MOTOR 10        // ms
+#define TAKS_FREQ_ATUA_MOTOR 1000        // ms
 #define TASK_FREQ_COLETA_FOTO 10       // ms
 #define TASK_FREQ_MODO_TREINO 10       // ms
 #define TASK_FREQ_COLETA_CORRENTE 100  // ms
 #define TASK_FREQ_REDE_NEURAL 10       // ms
 
 // Tamanho Stack das task
-#define STACK_UPDATE_NEOPIXEL 2048  // Memoria real -> 1724
-#define STACK_ATUA_MOTOR 2048       // Memoria real -> 1732
-#define STACK_COLETA_FOTO 3072      // Memoria real -> 2024
-#define STACK_MODO_TREINO 3072      // Memoria real -> 2024
-#define STACK_COLETA_CORRENTE 2048
-#define STACK_REDE_NEURAL 2048
+#define STACK_UPDATE_NEOPIXEL 4096  // Memoria real -> 1724
+#define STACK_ATUA_MOTOR 4096       // Memoria real -> 1732
+#define STACK_COLETA_FOTO 4096      // Memoria real -> 2024
+#define STACK_MODO_TREINO 4096      // Memoria real -> 2024
+#define STACK_COLETA_CORRENTE 4096
+#define STACK_REDE_NEURAL 4096
 
 // Prioridade da tarefa
 #define PRIORIDADE_UPDATE_NEOPIXEL 2
@@ -84,9 +84,9 @@
 // Core da task
 #define CORE_UPDATE_NEOPIXEL 1
 #define CORE_ATUA_MOTOR 1
-#define CORE_COLETA_FOTO 1
+#define CORE_COLETA_FOTO 0
 #define CORE_MODO_TREINO 1
-#define CORE_COLETA_CORRENTE 1
+#define CORE_COLETA_CORRENTE 0
 #define CORE_REDE_NEURAL 1
 
 //______________________________________________ Variáveis ______________________________________________
@@ -118,11 +118,7 @@ extern int iContadorChamdaSensorFoto;
 extern int iCorrenteMaxima;
 extern int iPosServo[];
 
-extern Servo servoPolegar;
-extern Servo servoIndicador;
-extern Servo servoMedio;
-extern Servo servoAnelar;
-extern Servo servoMindinho;
+extern Servo servoDedos[5];
 
 extern SemaphoreHandle_t xNeoPixelMutex;
 extern SemaphoreHandle_t xAtuaMotorMutex;

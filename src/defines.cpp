@@ -12,7 +12,7 @@ bool bArrMotorLiberado[] = {true, true, true, true, true};
 bool bArrDedoContraido[] = {false, false, false, false, false};
 bool bArrSobrecorrenteDetectada[5] = {false, false, false, false, false};
 bool bArrMotorEstadoTravado[5] = {false, false, false, false, false};
-bool bModoTreino = true;
+bool bModoTreino = false;
 bool bCalibDone = false;
 
 const uint8_t uiFreqModulacaoNeoPixelAtivado = 3;  // 3 clicos desativados para 1 ativado (valor de 1 é constante)
@@ -35,11 +35,7 @@ int iContadorChamdaSensorFoto = 0;
 int iCorrenteMaxima = 250;
 int iPosServo[] = {0, 0, 0, 0, 0};
 
-Servo servoPolegar;
-Servo servoIndicador;
-Servo servoMedio;
-Servo servoAnelar;
-Servo servoMindinho;
+Servo servoDedos [5];
 
 SemaphoreHandle_t xNeoPixelMutex = NULL;   // Trava as variaveis: colorTable, uiArrCorNeoPixel
 SemaphoreHandle_t xAtuaMotorMutex = NULL;  // Trava as variaveis: bArrMotorLiberado, bArrDedoContraido, uiArrPwmLevels, uiArrPwmRampa

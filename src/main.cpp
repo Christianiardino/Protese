@@ -31,23 +31,13 @@ void setup() {
     pinMode(SL4, INPUT);
 
     setupNeoPixels();
-    startWebServer();
+    //startWebServer();
     setInternalLedColor(0, 0, 0);
 
-    servoPolegar.attach(MOTOR_PIN[0]);
-    servoPolegar.write(iPosServo[0]);
-
-    servoPolegar.attach(MOTOR_PIN[1]);
-    servoPolegar.write(iPosServo[1]);
-
-    servoPolegar.attach(MOTOR_PIN[2]);
-    servoPolegar.write(iPosServo[2]);
-
-    servoPolegar.attach(MOTOR_PIN[3]);
-    servoPolegar.write(iPosServo[3]);
-
-    servoPolegar.attach(MOTOR_PIN[4]);
-    servoPolegar.write(iPosServo[4]);
+    for (int i = 0; i < 5; i++) {
+        servoDedos[i].attach(MOTOR_PIN[i]);
+        servoDedos[i].write(iPosServo[i]);
+    }
 
     // Criação dos semafaros
     xNeoPixelMutex = xSemaphoreCreateMutex();

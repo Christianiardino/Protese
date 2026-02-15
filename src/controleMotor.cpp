@@ -16,26 +16,29 @@ void atuaMotor_task(void* pvParameters) {
     TickType_t xLastWakeTime = xTaskGetTickCount();
     const TickType_t xFrequency = pdMS_TO_TICKS(TAKS_FREQ_ATUA_MOTOR);
 
-    for (int i = 0; i < 6; i++) {
-        ledcSetup(MOT_CHANNELS[i], PWM_FREQ, PWM_RES);
-        if (uiArrPwmLevels[i] == 0) uiArrPwmLevels[i] = 255;
-    }
-
     for (;;) {
         vTaskDelayUntil(&xLastWakeTime, xFrequency);
 
         if (xSemaphoreTake(xAtuaMotorMutex, (TickType_t)5) == true) {
             if (bModoTreino) {
                 for (uint8_t i = 0; i < 5; i++) {
-                    if (!bArrMotorEstadoTravado && bArrMotorLiberado && !bArrSobrecorrenteDetectada) {
+                    if (bArrMotorLiberado) {
                         if (bArrDedoContraido) {
                             iPosServo[i] = 0;
                         } else {
                             iPosServo[i] = 180;
                         }
+                        servoDedos[i].write(iPosServo[i]);
+                        Serial.println("Escreveu no servo!");
                     }
                 }
             } else {
+                Serial.println("Escreveu no servo!");
+                servoDedos[0].write(30);
+                servoDedos[1].write(60);
+                servoDedos[2].write(90);
+                servoDedos[3].write(120);
+                servoDedos[4].write(150);
             }
             xSemaphoreGive(xAtuaMotorMutex);
         }
