@@ -43,8 +43,9 @@ Servo servoMindinho;
 
 SemaphoreHandle_t xNeoPixelMutex = NULL;   // Trava as variaveis: colorTable, uiArrCorNeoPixel
 SemaphoreHandle_t xAtuaMotorMutex = NULL;  // Trava as variaveis: bArrMotorLiberado, bArrDedoContraido, uiArrPwmLevels, uiArrPwmRampa
-SemaphoreHandle_t xSensorFotoMutex = NULL;
+SemaphoreHandle_t xSensorFotoMutex = NULL; 
 SemaphoreHandle_t xEstatisticaMutex = NULL;
+SemaphoreHandle_t xSensorCorrenteMutex = NULL;
 
 float fTreinoCount = 0.0;
 float fArrDadosSensorFotoBruto[4][8] = {

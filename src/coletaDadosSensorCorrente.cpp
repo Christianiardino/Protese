@@ -10,9 +10,18 @@ void leituraSensorCorrente_task(void* pvParameters) {
     for (;;) {
         vTaskDelayUntil(&xLastWakeTime, xFrequency);
 
-        for (int i = 0; i < 5; i++) {
-            // TODO IMPLEMETAR ESTA PARTE
-            vTaskDelayUntil(&xLastWakeTime, xFrequency);
+        int leiturasLocais[5];
+        for(int i=0; i<5; i++) {
+             leiturasLocais[i] = analogRead(pinosSensorCorrente[i]);
+        }
+
+        if (xSemaphoreTake(xSensorCorrenteMutex, (TickType_t)10) == pdTRUE) {
+            for (int i = 0; i < 5; i++) {
+                fArrSensorCorrente[i] = (fArrSensorCorrente[i] * 0.8) + (leiturasLocais[i] * 0.2);
+                
+                // ... TODO (lógica de verificação de limites e sobrecorrente mantém aqui dentro) ...
+            }
+            xSemaphoreGive(xSensorCorrenteMutex);
         }
     }
 }

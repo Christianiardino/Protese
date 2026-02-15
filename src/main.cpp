@@ -82,6 +82,14 @@ void setup() {
         return;
     }
 
+    xSensorCorrenteMutex = xSemaphoreCreateMutex();
+    if (xSensorCorrenteMutex == NULL) {
+        if (DEBUG_PRINT) {
+            printf("[ERR] Falha ao criar Mutex Sensor corrente.\n");
+        }
+        return;
+    }
+
     // 2. Setup task neopixel
     xTaskCreatePinnedToCore(
         updateNeoPixel_task,         // Função da Task

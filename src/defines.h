@@ -12,7 +12,7 @@
 
 // Definições de DEBUG
 #define DEBUG_STACK_SIZE false
-#define DEBUG_PRINT false
+#define DEBUG_PRINT true
 
 #define INTERNAL_RGB 48
 
@@ -128,6 +128,7 @@ extern SemaphoreHandle_t xNeoPixelMutex;
 extern SemaphoreHandle_t xAtuaMotorMutex;
 extern SemaphoreHandle_t xSensorFotoMutex;
 extern SemaphoreHandle_t xEstatisticaMutex;
+extern SemaphoreHandle_t xSensorCorrenteMutex;
 
 extern float fTreinoCount;
 extern float fArrDadosSensorFotoBruto[4][8];

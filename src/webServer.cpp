@@ -235,6 +235,23 @@ void startWebServer() {
     // Rota JSON Data
 
     server.on("/data", HTTP_GET, [](AsyncWebServerRequest* request) {
+        float copiaFoto[4];
+        float copiaCorrente[5];
+
+        // Copia dados do fArrDadosSensorFoto para evitar problemas de leitura e escrita
+        if(xSemaphoreTake(xSensorFotoMutex, (TickType_t)10) == pdTRUE){
+          memcpy(copiaFoto, fArrDadosSensorFoto, sizeof(fArrDadosSensorFoto));
+        }else{
+          memset(copiaFoto, 0, sizeof(copiaFoto));
+        }
+        
+        // Copia dados do fArrSensorCorrente para evitar problemas de leitura e escrita
+        if(xSemaphoreTake(xSensorCorrenteMutex, (TickType_t)10) == pdTRUE){
+          memcpy(copiaCorrente, fArrSensorCorrente, sizeof(fArrSensorCorrente));
+        }else{
+          memset(copiaCorrente, 0, sizeof(copiaCorrente));
+        }
+
         String json;
         json.reserve(512);
         json = "{";
@@ -250,7 +267,7 @@ void startWebServer() {
         // Fotoeletrico
         json += "\"foto\":[";
         for (int i = 0; i < 4; i++) {
-            json += String(fArrDadosSensorFoto[i], 2);
+            json += String(copiaFoto[i], 2);
             if (i < 3) json += ",";
         }
         json += "],";
@@ -258,7 +275,7 @@ void startWebServer() {
         // Corrente
         json += "\"corrente\":[";
         for (int i = 0; i < 5; i++) {
-            json += String(fArrSensorCorrente[i], 0);
+            json += String(copiaCorrente[i], 0);
             if (i < 4) json += ",";
         }
         json += "],";
