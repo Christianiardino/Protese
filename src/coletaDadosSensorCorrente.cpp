@@ -11,30 +11,8 @@ void leituraSensorCorrente_task(void* pvParameters) {
         vTaskDelayUntil(&xLastWakeTime, xFrequency);
 
         for (int i = 0; i < 5; i++) {
-            dArrSensorCorrente[i] = (dArrSensorCorrente[i] * 0.8) + (analogRead(pinosSensorCorrente[i]) * 0.2);
-            // dArrSensorCorrente[i] = (dArrSensorCorrente[i] * 0.95) + (analogRead(pinosSensorCorrente[i]) * 0.05);
-
-            // Verificação de Limites
-            bool correnteAltaAgora = false;
-            if (dArrSensorCorrente[i] > (2047 + iCorrenteMaxima) || dArrSensorCorrente[i] < (2047 - iCorrenteMaxima)) {
-                correnteAltaAgora = true;
-            }
-
-            // Contador de Ciclos (Debounce + Filtro de Pico de Partida)
-            if (correnteAltaAgora) {
-                if (uiArrContadorCiclosAlta[i] < 255) {
-                    uiArrContadorCiclosAlta[i]++;
-                }
-            } else {
-                uiArrContadorCiclosAlta[i] = 0;
-            }
-
-            // Define flag de Sobrecorrente Baseada no Tempo
-            if (uiArrContadorCiclosAlta[i] >= uiCliclosCorrenteAlta) {
-                bArrSobrecorrenteDetectada[i] = true;
-            } else {
-                bArrSobrecorrenteDetectada[i] = false;
-            }
+            // TODO IMPLEMETAR ESTA PARTE
+            vTaskDelayUntil(&xLastWakeTime, xFrequency);
         }
     }
 }

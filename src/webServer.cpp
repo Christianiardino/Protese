@@ -250,7 +250,7 @@ void startWebServer() {
         // Fotoeletrico
         json += "\"foto\":[";
         for (int i = 0; i < 4; i++) {
-            json += String(dArrDadosSensorFoto[i], 2);
+            json += String(fArrDadosSensorFoto[i], 2);
             if (i < 3) json += ",";
         }
         json += "],";
@@ -258,7 +258,7 @@ void startWebServer() {
         // Corrente
         json += "\"corrente\":[";
         for (int i = 0; i < 5; i++) {
-            json += String(dArrSensorCorrente[i], 0);
+            json += String(fArrSensorCorrente[i], 0);
             if (i < 4) json += ",";
         }
         json += "],";

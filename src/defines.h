@@ -129,21 +129,21 @@ extern SemaphoreHandle_t xAtuaMotorMutex;
 extern SemaphoreHandle_t xSensorFotoMutex;
 extern SemaphoreHandle_t xEstatisticaMutex;
 
-extern double dTreinoCount;
-extern double dArrDadosSensorFotoBruto[4][8];
-extern double dArrDadosSensorFoto[4];
-extern double dTreinoSum[4];
-extern double dTreinoSumSq[4];
-extern double dArrSensorCorrente[5];
+extern float fTreinoCount;
+extern float fArrDadosSensorFotoBruto[4][8];
+extern float fArrDadosSensorFoto[4];
+extern float fTreinoSum[4];
+extern float fTreinoSumSq[4];
+extern float fArrSensorCorrente[5];
 
-extern const double dLayerBias[20];
-extern const double dW1[4][20];
-extern const double dW2[20][8];
-extern const double dB1[20];
-extern const double dB2[8];
-extern const double dCost[8][8];
-extern const double dPrior[8];
-extern double dMu[4];
-extern double dSigma[4];
+extern const float fLayerBias[20];
+extern const float fW1[4][20];
+extern const float fW2[20][8];
+extern const float fB1[20];
+extern const float fB2[8];
+extern const float fCost[8][8];
+extern const float fPrior[8];
+extern float fMu[4];
+extern float fSigma[4];
 
 #endif

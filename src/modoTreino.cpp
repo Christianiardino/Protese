@@ -177,10 +177,10 @@ void atualizaMaquinaEstadosCalibracao() {
     switch (estadoCalibAtual) {
         case CALIB_IDLE:
             if (!bModoTreino) {
-                dTreinoCount = 0.0;
+                fTreinoCount = 0.0;
                 for (int i = 0; i < 4; i++) {
-                    dTreinoSum[i] = 0.0;
-                    dTreinoSumSq[i] = 0.0;
+                    fTreinoSum[i] = 0.0;
+                    fTreinoSumSq[i] = 0.0;
                 }
             }
 
@@ -196,11 +196,11 @@ void atualizaMaquinaEstadosCalibracao() {
                 estadoCalibAtual = CALIB_CALCULO;
             } else {
                 for (int i = 0; i < 4; i++) {
-                    double valorSensor = dArrDadosSensorFoto[i];
-                    dTreinoSum[i] += valorSensor;
-                    dTreinoSumSq[i] += (valorSensor * valorSensor);
+                    double valorSensor = fArrDadosSensorFoto[i];
+                    fTreinoSum[i] += valorSensor;
+                    fTreinoSumSq[i] += (valorSensor * valorSensor);
                 }
-                dTreinoCount += 1.0;
+                fTreinoCount += 1.0;
             }
             break;
 
@@ -208,14 +208,14 @@ void atualizaMaquinaEstadosCalibracao() {
             printf("[CALIB] Realizando calculos estatisticos...\n");
             setInternalLedColor(0, 0, 0);
 
-            if (dTreinoCount > 0) {
+            if (fTreinoCount > 0) {
                 double tempMu[4];
                 double tempSigma[4];
 
                 for (int i = 0; i < 4; i++) {
-                    double mu_novo = dTreinoSum[i] / dTreinoCount;
+                    double mu_novo = fTreinoSum[i] / fTreinoCount;
                     tempMu[i] = mu_novo;
-                    double var_novo = (dTreinoSumSq[i] / dTreinoCount) - (mu_novo * mu_novo);
+                    double var_novo = (fTreinoSumSq[i] / fTreinoCount) - (mu_novo * mu_novo);
                     if (var_novo < 0) var_novo = 0;
                     tempSigma[i] = sqrt(var_novo);
                     printf("  Sensor[%d]: Mu=%.2f, Sigma=%.2f\n", i, tempMu[i], tempSigma[i]);
@@ -223,8 +223,8 @@ void atualizaMaquinaEstadosCalibracao() {
 
                 if (xSemaphoreTake(xEstatisticaMutex, portMAX_DELAY) == pdTRUE) {
                     for (int i = 0; i < 4; i++) {
-                        dMu[i] = tempMu[i];
-                        dSigma[i] = tempSigma[i];
+                        fMu[i] = tempMu[i];
+                        fSigma[i] = tempSigma[i];
                     }
                     xSemaphoreGive(xEstatisticaMutex);
                 }

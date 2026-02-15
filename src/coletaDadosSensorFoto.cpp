@@ -17,17 +17,17 @@ void coletaDadosSensorFotoeletrico_task(void* pvParameters) {
             double somaTemporaria = 0;
 
             for (int j = 7; j > 0; j--) {
-                dArrDadosSensorFotoBruto[i][j] = dArrDadosSensorFotoBruto[i][j - 1];
+                fArrDadosSensorFotoBruto[i][j] = fArrDadosSensorFotoBruto[i][j - 1];
             }
 
-            dArrDadosSensorFotoBruto[i][0] = (double)analogRead(pinos[i]);
+            fArrDadosSensorFotoBruto[i][0] = (double)analogRead(pinos[i]);
 
             for (int j = 0; j < 8; j++) {
-                somaTemporaria += dArrDadosSensorFotoBruto[i][j];
+                somaTemporaria += fArrDadosSensorFotoBruto[i][j];
             }
 
             if (xSemaphoreTake(xSensorFotoMutex, (TickType_t)5) == pdTRUE) {
-                dArrDadosSensorFoto[i] = somaTemporaria * 0.125;
+                fArrDadosSensorFoto[i] = somaTemporaria * 0.125;
                 xSemaphoreGive(xSensorFotoMutex);
             }
         }

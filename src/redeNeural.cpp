@@ -21,13 +21,13 @@ void redeNeural_task(void* pvParameters) {
 
         double leituraAtual[4];  // Copia local
         if (xSemaphoreTake(xSensorFotoMutex, (TickType_t)5) == pdTRUE) {
-            memcpy(leituraAtual, dArrDadosSensorFoto, sizeof(dArrDadosSensorFoto));
+            memcpy(leituraAtual, fArrDadosSensorFoto, sizeof(fArrDadosSensorFoto));
             xSemaphoreGive(xSensorFotoMutex);
         }
 
         // 1. Normalização (Z-Score)
         for (int i = 0; i < 4; i++) {
-            x_norm[i] = (leituraAtual[i] - dMu[i]) / (dSigma[i] + epsilon);
+            x_norm[i] = (leituraAtual[i] - fMu[i]) / (fSigma[i] + epsilon);
         }
 
         // 2. Camada 1 (Dense 4->20 + Tanh)
@@ -35,9 +35,9 @@ void redeNeural_task(void* pvParameters) {
         for (int j = 0; j < 20; j++) {
             double z = 0.0;
             for (int i = 0; i < 4; i++) {
-                z += x_norm[i] * dW1[i][j];
+                z += x_norm[i] * fW1[i][j];
             }
-            z += dB1[j];
+            z += fB1[j];
             layer1_a[j] = tanh(z);
         }
 
@@ -47,9 +47,9 @@ void redeNeural_task(void* pvParameters) {
         for (int k = 0; k < 8; k++) {
             double z = 0.0;
             for (int j = 0; j < 20; j++) {
-                z += layer1_a[j] * dW2[j][k];
+                z += layer1_a[j] * fW2[j][k];
             }
-            z += dB2[k];
+            z += fB2[k];
             layer2_z[k] = z;
 
             if (z > max_z) max_z = z;  // Guarda o maior valor
@@ -59,7 +59,7 @@ void redeNeural_task(void* pvParameters) {
         // UnnormProbs = exp(z - max) * Prior
         for (int k = 0; k < 8; k++) {
             double exps = exp(layer2_z[k] - max_z);
-            probs_unnorm[k] = exps * dPrior[k];
+            probs_unnorm[k] = exps * fPrior[k];
         }
 
         // 5. Matriz de Custo e Decisão (Argmin Risk)
@@ -72,7 +72,7 @@ void redeNeural_task(void* pvParameters) {
 
             // Soma ponderada: Probabilidade(k) * Custo(k -> c)
             for (int k = 0; k < 8; k++) {
-                currentRisk += probs_unnorm[k] * (double)dCost[k][c];
+                currentRisk += probs_unnorm[k] * (double)fCost[k][c];
             }
 
             if (currentRisk < minRisk) {
