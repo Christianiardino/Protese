@@ -2,7 +2,6 @@
 #define DEFINES_H
 
 #include <Arduino.h>
-#include <Servo.h>
 
 #include "driver/rmt.h"
 #include "freertos/FreeRTOS.h"
@@ -113,8 +112,6 @@ extern uint8_t uiStepAnguloServo;
 extern int iContadorChamdaSensorFoto;
 extern int iCorrenteMaxima;
 extern int iPontoMedioSensorCorrente[];
-
-extern Servo servoDedos[5];
 
 extern SemaphoreHandle_t xNeoPixelMutex;
 extern SemaphoreHandle_t xAtuaMotorMutex;

@@ -62,7 +62,8 @@ void atuaMotor_task(void* pvParameters) {
                     }
                 }
 
-                servoDedos[i].write(uiPosServo[i]);
+                int dutyCycle = map(uiPosServo[i], 0, 180, 410, 2048);
+                ledcWrite(i, dutyCycle);
             }
             xSemaphoreGive(xAtuaMotorMutex);
         }

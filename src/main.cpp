@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <Servo.h>
 #include <coletaDadosSensorCorrente.h>
 #include <coletaDadosSensorFoto.h>
 #include <controleMotor.h>
@@ -34,26 +33,20 @@ void setup() {
     // startWebServer();
     setInternalLedColor(0, 0, 0);
 
-    // Inicializa os servos
     for (int i = 0; i < 5; i++) {
-        servoDedos[i].attach(MOTOR_PIN[i]);
+        // ledcSetup(canal, frequencia, resolucao_em_bits)
+        // Servos usam 50Hz. Usamos 14 bits (0 a 16383) para ter boa precisão.
+        ledcSetup(i, 50, 14); 
+        
+        // ledcAttachPin(pino, canal)
+        ledcAttachPin(MOTOR_PIN[i], i);
+        
         uiTargetPosServo[i] = 0;
+        
+        // Coloca na posição 0 graus (pulso de ~500us = duty 410)
+        ledcWrite(i, 410); 
     }
-
-    // Sweep dos servos para garantir o funcionamento
-    for(int j = 0; j <= 180; j++){
-        for (int i = 0; i < 5; i++) {
-            servoDedos[i].write(j);
-            delay(10);
-        }
-    }
-
-    for(int j = 180; j >= 0; j--){
-        for (int i = 0; i < 5; i++) {
-            servoDedos[i].write(j);
-            delay(10);
-        }
-    }
+    delay(500);
 
     // Medição de ponto medio de corrente 
     for (int j = 0; j < 5; j++) {
