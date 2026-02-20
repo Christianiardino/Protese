@@ -8,11 +8,13 @@
 #include "freertos/semphr.h"
 #include "freertos/task.h"
 
+bool DEBUG_STACK_SIZE = false;
+bool DEBUG_PRINT = false;
+
 bool bArrMotorLiberado[] = {true, true, true, true, true};
 bool bArrDedoContraido[] = {false, false, false, false, false};
 bool bArrSobrecorrenteDetectada[5] = {false, false, false, false, false};
-bool bArrMotorEstadoTravado[5] = {false, false, false, false, false};
-bool bModoTreino = false;
+bool bModoTreino = true;
 bool bCalibDone = false;
 
 const uint8_t uiFreqModulacaoNeoPixelAtivado = 3;  // 3 clicos desativados para 1 ativado (valor de 1 é constante)
@@ -23,23 +25,24 @@ uint8_t uiContadorTreino = 0;
 uint8_t uiTreinoE = 0;
 uint8_t uiTreinoVal = 0;
 uint8_t uiCliclosCorrenteAlta = 5;
-uint8_t uiArrPwmCorrenteAtingida = 0;  // 0 = Solta o objeto ao travar. Mude para 30-50 se quiser segurar.
 uint8_t uiArrContadorCiclosAlta[5] = {0, 0, 0, 0, 0};
 uint8_t uiVetorDedosTreino[5] = {0, 0, 0, 0, 0};
 uint8_t uiArrCorNeoPixel[] = {196, 196, 196};
-uint8_t uiArrPwmLevels[] = {0, 0, 0, 0, 0, 0};
-uint8_t uiArrPwmRampa[] = {0, 0, 0, 0, 0, 0};
 uint8_t uiCorNeoPixelInterno[] = {0, 0, 0};
+uint8_t uiPosServo[] = {0, 0, 0, 0, 0};
+uint8_t uiLastPosServo[] = {0, 0, 0, 0};
+uint8_t uiTargetPosServo[] = {0, 0, 0, 0, 0};
+uint8_t uiStepAnguloServo = 2;
 
 int iContadorChamdaSensorFoto = 0;
 int iCorrenteMaxima = 250;
-int iPosServo[] = {0, 0, 0, 0, 0};
+int iPontoMedioSensorCorrente[] = {0, 0, 0, 0, 0};
 
-Servo servoDedos [5];
+Servo servoDedos[5];
 
 SemaphoreHandle_t xNeoPixelMutex = NULL;   // Trava as variaveis: colorTable, uiArrCorNeoPixel
 SemaphoreHandle_t xAtuaMotorMutex = NULL;  // Trava as variaveis: bArrMotorLiberado, bArrDedoContraido, uiArrPwmLevels, uiArrPwmRampa
-SemaphoreHandle_t xSensorFotoMutex = NULL; 
+SemaphoreHandle_t xSensorFotoMutex = NULL;
 SemaphoreHandle_t xEstatisticaMutex = NULL;
 SemaphoreHandle_t xSensorCorrenteMutex = NULL;
 

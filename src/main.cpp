@@ -31,52 +31,68 @@ void setup() {
     pinMode(SL4, INPUT);
 
     setupNeoPixels();
-    //startWebServer();
+    // startWebServer();
     setInternalLedColor(0, 0, 0);
 
+    // Inicializa os servos
     for (int i = 0; i < 5; i++) {
         servoDedos[i].attach(MOTOR_PIN[i]);
-        servoDedos[i].write(iPosServo[i]);
+        uiTargetPosServo[i] = 0;
+    }
+
+    // Sweep dos servos para garantir o funcionamento
+    for(int j = 0; j <= 180; j++){
+        for (int i = 0; i < 5; i++) {
+            servoDedos[i].write(j);
+            delay(10);
+        }
+    }
+
+    for(int j = 180; j >= 0; j--){
+        for (int i = 0; i < 5; i++) {
+            servoDedos[i].write(j);
+            delay(10);
+        }
+    }
+
+    // Medição de ponto medio de corrente 
+    for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < 100; i++) {
+            iPontoMedioSensorCorrente[j] = (iPontoMedioSensorCorrente[j] + analogRead(SC1)) / 2;
+        }
+        if (DEBUG_PRINT) {
+            printf("[SYS] Ponto medio sensor %d -> %d\n", j, iPontoMedioSensorCorrente[j]);
+        }
     }
 
     // Criação dos semafaros
     xNeoPixelMutex = xSemaphoreCreateMutex();
     if (xNeoPixelMutex == NULL) {
-        if (DEBUG_PRINT) {
-            printf("[ERR] Falha ao criar Mutex update neoPixel.\n");
-        }
+        printf("[ERR] Falha ao criar Mutex update neoPixel.\n");
         return;
     }
 
     xAtuaMotorMutex = xSemaphoreCreateMutex();
     if (xAtuaMotorMutex == NULL) {
-        if (DEBUG_PRINT) {
-            printf("[ERR] Falha ao criar Mutex atua motor.\n");
-        }
+        printf("[ERR] Falha ao criar Mutex atua motor.\n");
         return;
     }
 
     xSensorFotoMutex = xSemaphoreCreateMutex();
     if (xSensorFotoMutex == NULL) {
-        if (DEBUG_PRINT) {
-            printf("[ERR] Falha ao criar Mutex sensor foto.\n");
-        }
+        printf("[ERR] Falha ao criar Mutex sensor foto.\n");
         return;
     }
 
     xEstatisticaMutex = xSemaphoreCreateMutex();
     if (xEstatisticaMutex == NULL) {
-        if (DEBUG_PRINT) {
-            printf("[ERR] Falha ao criar Mutex Estatistica.\n");
-        }
+        printf("[ERR] Falha ao criar Mutex Estatistica.\n");
         return;
     }
 
     xSensorCorrenteMutex = xSemaphoreCreateMutex();
     if (xSensorCorrenteMutex == NULL) {
-        if (DEBUG_PRINT) {
-            printf("[ERR] Falha ao criar Mutex Sensor corrente.\n");
-        }
+        printf("[ERR] Falha ao criar Mutex Sensor corrente.\n");
         return;
     }
 

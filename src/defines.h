@@ -10,23 +10,16 @@
 #include "freertos/semphr.h"
 #include "freertos/task.h"
 
-// Definições de DEBUG
-#define DEBUG_STACK_SIZE false
-#define DEBUG_PRINT true
-
 #define INTERNAL_RGB 48
 
 //______________________________________________ Atua Motores______________________________________________
 // Definições de pinos dos motores
-#define MOTOR1 35
-#define MOTOR2 36
-#define MOTOR3 37
-#define MOTOR4 38
-#define MOTOR5 39
-#define MOTOR_VIB 40
-
-// Defines Atua motor
-#define STEP_PWM_RAMPA 1
+#define MOTOR1 38
+#define MOTOR2 39
+#define MOTOR3 40
+#define MOTOR4 41
+#define MOTOR5 42
+#define MOTOR_VIB 47
 
 //______________________________________________ Update Neopixel______________________________________________
 // Definições de Hardware e Protocolo NEOPIXEL
@@ -58,18 +51,18 @@
 
 //______________________________________________ RTOS______________________________________________
 // Frequência de atualização task
-#define TAKS_FREQ_UPDATE_NEOPIXEL 10   // ms
-#define TAKS_FREQ_ATUA_MOTOR 1000        // ms
-#define TASK_FREQ_COLETA_FOTO 10       // ms
-#define TASK_FREQ_MODO_TREINO 10       // ms
-#define TASK_FREQ_COLETA_CORRENTE 100  // ms
-#define TASK_FREQ_REDE_NEURAL 10       // ms
+#define TAKS_FREQ_UPDATE_NEOPIXEL 10  // ms
+#define TAKS_FREQ_ATUA_MOTOR 20       // ms
+#define TASK_FREQ_COLETA_FOTO 10      // ms
+#define TASK_FREQ_MODO_TREINO 10      // ms
+#define TASK_FREQ_COLETA_CORRENTE 30  // ms
+#define TASK_FREQ_REDE_NEURAL 10      // ms
 
 // Tamanho Stack das task
-#define STACK_UPDATE_NEOPIXEL 4096  // Memoria real -> 1724
-#define STACK_ATUA_MOTOR 4096       // Memoria real -> 1732
-#define STACK_COLETA_FOTO 4096      // Memoria real -> 2024
-#define STACK_MODO_TREINO 4096      // Memoria real -> 2024
+#define STACK_UPDATE_NEOPIXEL 4096 
+#define STACK_ATUA_MOTOR 4096
+#define STACK_COLETA_FOTO 4096
+#define STACK_MODO_TREINO 4096
 #define STACK_COLETA_CORRENTE 4096
 #define STACK_REDE_NEURAL 4096
 
@@ -91,10 +84,12 @@
 
 //______________________________________________ Variáveis ______________________________________________
 
+extern bool DEBUG_STACK_SIZE;
+extern bool DEBUG_PRINT;
+
 extern bool bArrMotorLiberado[];
 extern bool bArrDedoContraido[];
 extern bool bArrSobrecorrenteDetectada[5];
-extern bool bArrMotorEstadoTravado[5];
 extern bool bModoTreino;
 extern bool bCalibDone;
 
@@ -106,17 +101,18 @@ extern uint8_t uiContadorTreino;
 extern uint8_t uiTreinoE;
 extern uint8_t uiTreinoVal;
 extern uint8_t uiCliclosCorrenteAlta;
-extern uint8_t uiArrPwmCorrenteAtingida;
 extern uint8_t uiArrContadorCiclosAlta[5];
 extern uint8_t uiVetorDedosTreino[];
 extern uint8_t uiArrCorNeoPixel[];
-extern uint8_t uiArrPwmLevels[];
-extern uint8_t uiArrPwmRampa[];
 extern uint8_t uiCorNeoPixelInterno[];
+extern uint8_t uiPosServo[];
+extern uint8_t uiLastPosServo[];
+extern uint8_t uiTargetPosServo[];
+extern uint8_t uiStepAnguloServo;
 
 extern int iContadorChamdaSensorFoto;
 extern int iCorrenteMaxima;
-extern int iPosServo[];
+extern int iPontoMedioSensorCorrente[];
 
 extern Servo servoDedos[5];
 

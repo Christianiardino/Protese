@@ -220,11 +220,9 @@ void startWebServer() {
     bool success = WiFi.softAP(ssid, password, 1, 0, 4);
 
     if (success && DEBUG_PRINT) {
-        Serial.println("Hotspot Ativado.");
-        Serial.print("IP: ");
-        Serial.println(WiFi.softAPIP());
+        printf("[SYS] Hotspot Ativado.\n");
     } else {
-        Serial.println("Falha Soft-AP.");
+        printf("[ERR] Falha Soft-AP.\n");
     }
 
     // Rota Principal
@@ -283,7 +281,7 @@ void startWebServer() {
         // PWM
         json += "\"pwm\":[";
         for (int i = 0; i < 6; i++) {
-            json += String(uiArrPwmRampa[i]);
+            json += String(uiPosServo[i]);
             if (i < 5) json += ",";
         }
         json += "]";

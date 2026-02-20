@@ -28,6 +28,10 @@ void coletaDadosSensorFotoeletrico_task(void* pvParameters) {
 
             if (xSemaphoreTake(xSensorFotoMutex, (TickType_t)5) == pdTRUE) {
                 fArrDadosSensorFoto[i] = somaTemporaria * 0.125;
+                /*if(DEBUG_PRINT){
+                    printf("[INFO] Valor sensores fotoeletricos - %f - %f - %f -%f\n", fArrDadosSensorFoto[0],
+                    fArrDadosSensorFoto[1], fArrDadosSensorFoto[2], fArrDadosSensorFoto[3]);
+                }*/
                 xSemaphoreGive(xSensorFotoMutex);
             }
         }
@@ -37,5 +41,6 @@ void coletaDadosSensorFotoeletrico_task(void* pvParameters) {
             uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
             printf("[DEBUG] Stack livre mínima coleta dados foto: %d bytes\n", (int)uxHighWaterMark);
         }
+        
     }
 }

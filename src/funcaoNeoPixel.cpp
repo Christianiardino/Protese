@@ -26,7 +26,7 @@ void setupNeoPixels() {
 void setInternalLedColor(uint8_t r, uint8_t g, uint8_t b) {
     internalLed.fill(internalLed.Color(r, g, b));
     if (DEBUG_PRINT) {
-        printf("setInternalLedColor chamado");
+        printf("[SYS] setInternalLedColor chamado\n");
     }
     internalLed.show();
 }

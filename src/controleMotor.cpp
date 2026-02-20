@@ -22,23 +22,47 @@ void atuaMotor_task(void* pvParameters) {
         if (xSemaphoreTake(xAtuaMotorMutex, (TickType_t)5) == true) {
             if (bModoTreino) {
                 for (uint8_t i = 0; i < 5; i++) {
-                    if (bArrMotorLiberado) {
-                        if (bArrDedoContraido) {
-                            iPosServo[i] = 0;
+                    if (bArrMotorLiberado[i]) {
+                        if (uiVetorDedosTreino[i] == 0) {
+                            uiTargetPosServo[i] = 0;
                         } else {
-                            iPosServo[i] = 180;
+                            uiTargetPosServo[i] = 180;
                         }
-                        servoDedos[i].write(iPosServo[i]);
-                        Serial.println("Escreveu no servo!");
                     }
                 }
             } else {
-                Serial.println("Escreveu no servo!");
-                servoDedos[0].write(30);
-                servoDedos[1].write(60);
-                servoDedos[2].write(90);
-                servoDedos[3].write(120);
-                servoDedos[4].write(150);
+                for(int i = 0; i < 5; i++){
+                    if(bArrDedoContraido[i]){
+                        uiTargetPosServo[i] = 180;
+                    }else{
+                        uiTargetPosServo[i] = 0;
+                    }
+                }
+            }
+
+            // Loop para passar valor uiTargetPosServo para posServo com rampa
+            for (uint8_t i = 0; i < 5; i++) {
+
+                // Fail safe de posição
+                if(uiTargetPosServo[i] > 180){
+                    uiTargetPosServo[i] = 0;
+                    printf("[ERR] POSIÇÃO MAIOR QUE 180");
+                }
+
+                // Inicia rampa para controle do servo
+                if(uiTargetPosServo[i] > uiPosServo[i]){
+                    uiPosServo[i] = uiPosServo[i] + uiStepAnguloServo;
+                    if(uiPosServo[i] > 180){
+                        uiPosServo[i] = 180;
+                    }
+                }else if(uiTargetPosServo[i] < uiPosServo[i]){
+                    uiPosServo[i] = uiPosServo[i] - uiStepAnguloServo;
+                    if(uiPosServo[i] > 180){
+                        uiPosServo[i] = 0;
+                    }
+                }
+
+                servoDedos[i].write(uiPosServo[i]);
             }
             xSemaphoreGive(xAtuaMotorMutex);
         }
