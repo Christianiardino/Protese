@@ -11,20 +11,20 @@ void leituraSensorCorrente_task(void* pvParameters) {
         vTaskDelayUntil(&xLastWakeTime, xFrequency);
 
         int leiturasLocais[5];
-        for(int i=0; i<5; i++) {
-             leiturasLocais[i] = analogRead(pinosSensorCorrente[i]);
+        for (int i = 0; i < 5; i++) {
+            leiturasLocais[i] = analogRead(pinosSensorCorrente[i]);
         }
 
         if (xSemaphoreTake(xSensorCorrenteMutex, (TickType_t)10) == pdTRUE) {
             for (int i = 0; i < 5; i++) {
                 fArrSensorCorrente[i] = (fArrSensorCorrente[i] * 0.8) + (leiturasLocais[i] * 0.2);
-                if(fArrDadosSensorFoto[i] > iPontoMedioSensorCorrente[i] + iCorrenteMaxima || 
-                   fArrDadosSensorFoto[i] < iPontoMedioSensorCorrente[i] - iCorrenteMaxima ){
+                if (fArrSensorCorrente[i] > iPontoMedioSensorCorrente[i] + iCorrenteMaxima ||
+                    fArrSensorCorrente[i] < iPontoMedioSensorCorrente[i] - iCorrenteMaxima) {
                     bArrSobrecorrenteDetectada[i] = true;
-                    if(DEBUG_PRINT){
+                    if (DEBUG_PRINT) {
                         printf("[SYS] Aviso de corrente alta\n");
                     }
-                }else{
+                } else {
                     bArrSobrecorrenteDetectada[i] = false;
                 }
             }

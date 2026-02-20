@@ -59,7 +59,7 @@
 #define TASK_FREQ_REDE_NEURAL 10      // ms
 
 // Tamanho Stack das task
-#define STACK_UPDATE_NEOPIXEL 4096 
+#define STACK_UPDATE_NEOPIXEL 4096
 #define STACK_ATUA_MOTOR 4096
 #define STACK_COLETA_FOTO 4096
 #define STACK_MODO_TREINO 4096

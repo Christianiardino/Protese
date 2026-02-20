@@ -196,7 +196,7 @@ void atualizaMaquinaEstadosCalibracao() {
                 estadoCalibAtual = CALIB_CALCULO;
             } else {
                 for (int i = 0; i < 4; i++) {
-                    double valorSensor = fArrDadosSensorFoto[i];
+                    float valorSensor = fArrDadosSensorFoto[i];
                     fTreinoSum[i] += valorSensor;
                     fTreinoSumSq[i] += (valorSensor * valorSensor);
                 }
@@ -209,13 +209,13 @@ void atualizaMaquinaEstadosCalibracao() {
             setInternalLedColor(0, 0, 0);
 
             if (fTreinoCount > 0) {
-                double tempMu[4];
-                double tempSigma[4];
+                float tempMu[4];
+                float tempSigma[4];
 
                 for (int i = 0; i < 4; i++) {
-                    double mu_novo = fTreinoSum[i] / fTreinoCount;
+                    float mu_novo = fTreinoSum[i] / fTreinoCount;
                     tempMu[i] = mu_novo;
-                    double var_novo = (fTreinoSumSq[i] / fTreinoCount) - (mu_novo * mu_novo);
+                    float var_novo = (fTreinoSumSq[i] / fTreinoCount) - (mu_novo * mu_novo);
                     if (var_novo < 0) var_novo = 0;
                     tempSigma[i] = sqrt(var_novo);
                     printf("  Sensor[%d]: Mu=%.2f, Sigma=%.2f\n", i, tempMu[i], tempSigma[i]);

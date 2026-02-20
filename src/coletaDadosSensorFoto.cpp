@@ -14,13 +14,13 @@ void coletaDadosSensorFotoeletrico_task(void* pvParameters) {
         }
 
         for (int i = 0; i < 4; i++) {
-            double somaTemporaria = 0;
+            float somaTemporaria = 0;
 
             for (int j = 7; j > 0; j--) {
                 fArrDadosSensorFotoBruto[i][j] = fArrDadosSensorFotoBruto[i][j - 1];
             }
 
-            fArrDadosSensorFotoBruto[i][0] = (double)analogRead(pinos[i]);
+            fArrDadosSensorFotoBruto[i][0] = (float)analogRead(pinos[i]);
 
             for (int j = 0; j < 8; j++) {
                 somaTemporaria += fArrDadosSensorFotoBruto[i][j];
@@ -41,6 +41,5 @@ void coletaDadosSensorFotoeletrico_task(void* pvParameters) {
             uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
             printf("[DEBUG] Stack livre mínima coleta dados foto: %d bytes\n", (int)uxHighWaterMark);
         }
-        
-    }
+        }
 }
