@@ -141,6 +141,9 @@ void redeNeural_task(void* pvParameters) {
                     break;
             }
 
+             if(DEBUG_PRINT){
+                printf("[SYS] Dedos movimento - %d\n", bestClass);
+            }
             xSemaphoreGive(xAtuaMotorMutex);
         }
     }

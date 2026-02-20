@@ -9,7 +9,7 @@
 #include "freertos/task.h"
 
 bool DEBUG_STACK_SIZE = false;
-bool DEBUG_PRINT = false;
+bool DEBUG_PRINT = true;
 
 bool bArrMotorLiberado[] = {true, true, true, true, true};
 bool bArrDedoContraido[] = {false, false, false, false, false};
@@ -37,8 +37,6 @@ uint8_t uiStepAnguloServo = 2;
 int iContadorChamdaSensorFoto = 0;
 int iCorrenteMaxima = 250;
 int iPontoMedioSensorCorrente[] = {0, 0, 0, 0, 0};
-
-Servo servoDedos[5];
 
 SemaphoreHandle_t xNeoPixelMutex = NULL;   // Trava as variaveis: colorTable, uiArrCorNeoPixel
 SemaphoreHandle_t xAtuaMotorMutex = NULL;  // Trava as variaveis: bArrMotorLiberado, bArrDedoContraido, uiArrPwmLevels, uiArrPwmRampa

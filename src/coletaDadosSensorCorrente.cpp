@@ -22,7 +22,7 @@ void leituraSensorCorrente_task(void* pvParameters) {
                     fArrSensorCorrente[i] < iPontoMedioSensorCorrente[i] - iCorrenteMaxima) {
                     bArrSobrecorrenteDetectada[i] = true;
                     if (DEBUG_PRINT) {
-                        printf("[SYS] Aviso de corrente alta\n");
+                        //printf("[SYS] Aviso de corrente alta\n");
                     }
                 } else {
                     bArrSobrecorrenteDetectada[i] = false;

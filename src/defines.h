@@ -55,7 +55,7 @@
 #define TASK_FREQ_COLETA_FOTO 10      // ms
 #define TASK_FREQ_MODO_TREINO 10      // ms
 #define TASK_FREQ_COLETA_CORRENTE 30  // ms
-#define TASK_FREQ_REDE_NEURAL 10      // ms
+#define TASK_FREQ_REDE_NEURAL 1000      // ms
 
 // Tamanho Stack das task
 #define STACK_UPDATE_NEOPIXEL 4096
